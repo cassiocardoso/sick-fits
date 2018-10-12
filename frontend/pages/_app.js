@@ -18,7 +18,7 @@ class MyApp extends App {
 }
 
 MyApp.propTypes = {
-  Component: PropTypes.node.isRequired
+  Component: PropTypes.func.isRequired
 };
 
 export default MyApp;

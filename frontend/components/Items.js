@@ -59,4 +59,5 @@ class Items extends PureComponent {
   }
 }
 
+export { ALL_ITEMS_QUERY };
 export default Items;

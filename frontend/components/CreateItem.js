@@ -33,11 +33,11 @@ class CreateItem extends PureComponent {
     super(props);
 
     this.state = {
-      title: "My awesome item",
-      image: "test.jpg",
-      largeImage: "large-test.jpg",
-      description: "Awesome item description here",
-      price: 1500
+      title: "",
+      image: "",
+      largeImage: "",
+      description: "",
+      price: 0
     };
   }
 
@@ -48,8 +48,30 @@ class CreateItem extends PureComponent {
     this.setState({ [name]: val });
   };
 
+  uploadFile = async e => {
+    const { files } = e.target;
+    const data = new FormData();
+
+    data.append("file", files[0]);
+    data.append("upload_preset", "sickfits");
+
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/cassiocardoso/image/upload/",
+      {
+        method: "POST",
+        body: data
+      }
+    );
+    const file = await res.json();
+
+    this.setState({
+      image: file.secure_url,
+      largeImage: file.eager[0].secure_url
+    });
+  };
+
   render() {
-    const { description, image, largeImage, title, price } = this.state;
+    const { description, image, title, price } = this.state;
 
     return (
       <Mutation mutation={CREATE_ITEM_MUTATION} variables={this.state}>
@@ -81,17 +103,6 @@ class CreateItem extends PureComponent {
                   required
                 />
               </label>
-              <label htmlFor="description">
-                Description
-                <textarea
-                  id="description"
-                  name="description"
-                  placeholder="Item description..."
-                  value={description}
-                  onChange={this.handleInputChange}
-                  required
-                />
-              </label>
               <label htmlFor="price">
                 Price
                 <input
@@ -100,6 +111,30 @@ class CreateItem extends PureComponent {
                   name="price"
                   placeholder="Item price"
                   value={price}
+                  onChange={this.handleInputChange}
+                  required
+                />
+              </label>
+              <label htmlFor="image">
+                Image
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  placeholder="Upload an image"
+                  onChange={this.uploadFile}
+                />
+                {image && (
+                  <img src={image} width="150" alt={`[PREVIEW] ${title}`} />
+                )}
+              </label>
+              <label htmlFor="description">
+                Description
+                <textarea
+                  id="description"
+                  name="description"
+                  placeholder="Item description..."
+                  value={description}
                   onChange={this.handleInputChange}
                   required
                 />

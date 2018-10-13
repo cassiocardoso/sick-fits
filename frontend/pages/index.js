@@ -1,6 +1,8 @@
+import Items from "../components/Items";
+
 const Index = () => (
   <div>
-    <p>Index</p>
+    <Items />
   </div>
 );
 

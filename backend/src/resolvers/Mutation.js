@@ -12,6 +12,24 @@ const Mutations = {
     );
 
     return item;
+  },
+  updateItem(parent, args, ctx, info) {
+    // create a copy of the updated properties
+    const updates = { ...args };
+
+    // delete `id` prop since it can't be modified
+    delete updates.id;
+
+    // run the update method
+    return ctx.db.mutation.updateItem(
+      {
+        data: updates,
+        where: {
+          id: args.id
+        }
+      },
+      info
+    );
   }
 };
 

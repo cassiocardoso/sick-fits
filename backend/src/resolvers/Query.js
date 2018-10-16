@@ -4,7 +4,8 @@ const { forwardTo } = require("prisma-binding");
 // where no logic or authentication is needed
 const Query = {
   items: forwardTo("db"),
-  item: forwardTo("db")
+  item: forwardTo("db"),
+  itemsConnection: forwardTo("db")
 };
 
 module.exports = Query;

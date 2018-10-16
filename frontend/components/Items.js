@@ -1,9 +1,11 @@
 import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import styled from "styled-components";
 
 import Item from "./Item";
+import Pagination from "./Pagination";
 
 const ALL_ITEMS_QUERY = gql`
   query ALL_ITEMS_QUERY {
@@ -32,9 +34,11 @@ const ItemsList = styled.div`
 
 class Items extends PureComponent {
   render() {
+    const { page } = this.props;
+
     return (
       <Center>
-        <h1>Items</h1>
+        <Pagination page={page} />
         <Query query={ALL_ITEMS_QUERY}>
           {({ data, error, loading }) => {
             if (loading) {
@@ -58,6 +62,10 @@ class Items extends PureComponent {
     );
   }
 }
+
+Items.propTypes = {
+  page: PropTypes.number.isRequired
+};
 
 export { ALL_ITEMS_QUERY };
 export default Items;
